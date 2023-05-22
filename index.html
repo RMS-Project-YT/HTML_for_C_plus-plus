@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Converter</title>
+    <style>
+        body {
+            background-color: #f1f1f1;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 80vw;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        textarea {
+            width: calc(100% - 20px);
+            min-height: 150px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
+        }
+
+        .output {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            padding: 10px;
+            white-space: pre-wrap;
+        }
+
+        .container_button {
+            display: flex;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .copy-message {
+            color: #4caf50;
+            font-weight: bold;
+            margin-top: 10px;
+            display: none;
+            padding: 10px;
+        }
+    </style>
+    <script>
+      function resizeTextarea() {
+          var textarea = document.getElementById("frase");
+          textarea.style.height = "auto";
+          textarea.style.height = textarea.scrollHeight + "px";
+      }
+
+      function substituirAspas() {
+        var frase = document.getElementById("frase").value;
+        var fraseSubstituida = frase.replaceAll('"', '\\"');
+        var saida = 'const char* indexHTML = R"(\n' + fraseSubstituida + '\n)";';
+
+        navigator.clipboard.writeText(saida)
+        .then(() => {
+            document.querySelector('.copy-message').style.display = "block";
+            setTimeout(() => {
+              document.querySelector('.copy-message').style.display = "none";
+            }, 1000);
+        })
+
+        .catch((err) => {
+            alert("Erro ao copiar o código: " + err);
+        });
+      }
+    </script>
+    
+</head>
+<body>
+    <div class="container">
+        <h1>HTML para String C++</h1>
+
+        <div class="output">
+            <label for="frase">Código:</label>
+            <textarea id="frase" rows="1" placeholder="Insira seu código aqui" oninput="resizeTextarea()"></textarea>
+        </div>
+
+        <div class="container_button">
+          <button onclick="substituirAspas()">Gerar código</button>
+          <span class="copy-message">Código copiado!</span>
+        </div>
+    </div>
+</body>
+</html>
